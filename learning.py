@@ -1,0 +1,74 @@
+import random
+
+def get_difficulty():
+    """Allows the user to select a difficulty level."""
+    print("\n--- Select Difficulty Level ---")
+    print("1. Easy   (Range: 1 - 50,   10 attempts)")
+    print("2. Medium (Range: 1 - 100,   7 attempts)")
+    print("3. Hard   (Range: 1 - 200,   5 attempts)")
+    
+    while True:
+        choice = input("Enter your choice (1, 2, or 3): ").strip()
+        if choice == '1':
+            return 50, 10
+        elif choice == '2':
+            return 100, 7
+        elif choice == '3':
+            return 200, 5
+        else:
+            print("Invalid choice! Please enter 1, 2, or 3.")
+
+def play_game():
+    """Core logic for the number guessing game."""
+    print("========================================")
+    print("      WELCOME TO THE GUESSING GAME      ")
+    print("========================================")
+    
+    max_range, max_attempts = get_difficulty()
+    secret_number = random.randint(1, max_range)
+    
+    print(f"\nI have picked a number between 1 and {max_range}.")
+    print(f"You have {max_attempts} attempts to guess it. Good luck!\n")
+    
+    attempts_taken = 0
+    
+    while attempts_taken < max_attempts:
+        remaining = max_attempts - attempts_taken
+        print(f"Attempts remaining: {remaining}")
+        
+        # Input validation for user guess
+        user_input = input("Enter your guess: ").strip()
+        if not user_input.isdigit():
+            print("⚠️ Please enter a valid positive integer.\n")
+            continue
+            
+        guess = int(user_input)
+        attempts_taken += 1
+        
+        if guess < secret_number:
+            print("📉 Too low! Try a higher number.\n")
+        elif guess > secret_number:
+            print("📈 Too high! Try a lower number.\n")
+        else:
+            print("****************************************")
+            print(f"🎉 CONGRATULATIONS! You guessed the number {secret_number} in {attempts_taken} attempts!")
+            print("****************************************")
+            return
+            
+    # If loop finishes without guessing correctly
+    print("----------------------------------------")
+    print(f"❌ Game Over! You've run out of attempts.")
+    print(f"The secret number was: {secret_number}")
+    print("----------------------------------------")
+
+def main():
+    """Main program loop to allow multiple rounds."""
+    while True:
+        play_game()
+        replay = input("\nWould you like to play again? (y/n): ").strip().lower()
+        if replay != 'y':
+            print("\nThanks for playing! Goodbye! 👋")
+            break
+
+if __name__ == "__main__":
+    main()
